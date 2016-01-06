@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import datetime
+import logging
+import inspect
 
 # mail
 import smtplib
@@ -23,6 +25,7 @@ from picamera import PiCamera
 import RPi.GPIO as GPIO
 import time
 
+# GPIO
 GPIO.setmode(GPIO.BCM)
 PIR = 17
 LED = 18
@@ -30,13 +33,20 @@ GPIO.setup(PIR, GPIO.IN)
 GPIO.setwarnings(False)
 GPIO.setup(LED, GPIO.OUT)
 
-SPEAK = False
-SMS = False
+FH = logging.FileHandler('motion_detected.log')
+FH.setLevel(logging.DEBUG)
+LOGGER = logging.getLogger(inspect.stack()[0][3])
+LOGGER.setLevel(logging.DEBUG)
+LOGGER.addHandler(FH)
+
+SPEAK = True
+SMS = True
 EMAIL = True
 
 def speak(message='Motion detected in this room.'):
     p = subprocess.Popen(["espeak", "-ven+f3", "-k5", "-s150", message])
     time.sleep(15)
+    LOGGER.debug('Spoke.')
 
 def blink():
     for i in range(3):
@@ -44,16 +54,18 @@ def blink():
         time.sleep(0.1)
         GPIO.output(LED, GPIO.LOW)
         time.sleep(0.1)
+    LOGGER.debug('Blinked.')
 
 def takepic():
     current_time = datetime.datetime.now()
-    snap_name = current_time.strftime('%Y-%m-%d-%H:%M:%S') + '.jpg'
+    time_stamp = current_time.strftime('%Y-%m-%d-%H:%M:%S')
+    LOGGER.debug('Motion detected at {}'.format(time_stamp))
+    snap_name = time_stamp + '.jpg'
     with PiCamera() as camera:
         camera.resolution = (800, 600)
         camera.framerate = 24
         camera.start_preview()
-        camera.annotate_text = 'Invasion! @ {}'.format(
-            current_time.strftime('%Y-%m-%d-%H:%M:%S'))
+        camera.annotate_text = 'Invasion! @ {}'.format(time_stamp)
         camera.capture(snap_name)
     return {'time_stamp': current_time,
             'file_name': snap_name}
@@ -79,7 +91,7 @@ def send_email(to, frm='iclcoolster@gmail.com', pic=takepic()):
     server.starttls()
     server.login(fromaddr, password)
     server.send_message(msg, fromaddr, toaddr)
-    print('Mail sent.')
+    LOGGER.debug('Mail sent.')
     server.quit()
     time.sleep(15)
 
@@ -91,14 +103,13 @@ def send_sms(to=my_number, frm=twilio_number, message='Motion detected!'):
         to = to,
         from_ = frm
     )
-    print(message.sid)
-    print('SMS sent.')
+    LOGGER.debug(message.sid)
+    LOGGER.debug('SMS sent.')
     time.sleep(15)
 
 while True:
     time.sleep(0.1)
     if GPIO.input(PIR) == 1:
-        print('Motion detected!')
         blink()
         if SPEAK == True:
             speak()
@@ -107,5 +118,4 @@ while True:
         if SMS == True:
             send_sms()
     else:
-        print('Waiting')
         time.sleep(0.1)
