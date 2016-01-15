@@ -22,7 +22,7 @@ class RPi2:
         - Framerate
         - Custom annotate text
         '''
-        Current_time = datetime.datetime.now()
+        current_time = datetime.datetime.now()
         time_stamp = current_time.strftime('%Y-%m-%d-%H:%M:%S')
 
         if filename:
@@ -48,7 +48,10 @@ class RPi2:
                 time.sleep(delay)
         return ValueError('LED_PIN not set')
 
-    def get_pir_status(self):
+    def is_pir_active(self):
         if self.PIR:
-            return GPIO.input(self.PIR)
+            if GPIO.input(self.PIR):
+                return True
+            else:
+                return False
         raise ValueError('PIR_PIN not set')

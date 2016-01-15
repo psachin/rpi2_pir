@@ -1,5 +1,6 @@
-from rpi2 import RPi2
+from .rpi2 import RPi2
+from .messaging import Messaging
+from .debug import DebugMeta
 
-
-__name__ = 'rpi2'
-__all__ = ['RPi2']
+__name__ = 'module'
+__all__ = ['RPi2', 'Messaging', 'DebugMeta']
