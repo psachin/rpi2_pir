@@ -21,6 +21,11 @@
 ** Install
    - Download or clone this repo.
 
+   - Clone
+     #+BEGIN_SRC sh
+       git clone https://github.com/psachin/rpi2_pir.git
+     #+END_SRC
+
 *** Requirements(hardware)
     - Raspberry Pi 2, Model B v1.1
     - PI camera(I'm using NOIR)
@@ -32,7 +37,7 @@
     - You need python version 3
     - Install necessary modules using
 
-      #+BEGIN_SRC sh nil
+      #+BEGIN_SRC sh
         pip3 install -r requirements.txt
       #+END_SRC
 
@@ -48,7 +53,7 @@
 ** Usage
    - See =sample.py= file for usage
    - Execute by typing
-     #+BEGIN_SRC sh nil
+     #+BEGIN_SRC sh
        python3 sample.py
      #+END_SRC
 
@@ -69,5 +74,8 @@
 
 ** Note
    - There may be bugs or design errors in the code. I wrote this in a
-     hurry, to help someone for his project. Future version may be
+     hurry, to help someone for his project. Future versions may be
      more robust and usable.
+
+** License
+   - GNU GPL v3
