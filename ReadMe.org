@@ -1,0 +1,73 @@
+#+TITLE: ReadMe
+#+DATE: \today
+#+AUTHOR: Sachin
+#+EMAIL: iclcoolster@gmail.com
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:t p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:t todo:t |:t
+#+CREATOR: Emacs 24.4.1 (Org mode 8.2.10)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+
+
+* RPi2
+  - Tested on Raspberry Pi 2, Model B v1.1
+  - Python3 script to detect motion, click photo, and send email/SMS.
+
+** Install
+   - Download or clone this repo.
+
+*** Requirements(hardware)
+    - Raspberry Pi 2, Model B v1.1
+    - PI camera(I'm using NOIR)
+    - PIR Sensor
+    - Breadboard, connecting wires, resistors, LED
+    - Working Internet connection
+
+*** Requirements(software)
+    - You need python version 3
+    - Install necessary modules using
+
+      #+BEGIN_SRC sh nil
+        pip3 install -r requirements.txt
+      #+END_SRC
+
+** Setup
+   - Connect RPI and other peripherals as shown
+
+     #+CAPTION: RPi2 - Motion sensor setup
+     #+NAME: RPI2-01
+     #+ATTR_HTML: alt="RPi2 - Motion sensor setup"
+     #+ATTR_HTML: width="300" height="100"
+     [[./images/rpi2_motion_sensor_bb.png]]
+
+** Usage
+   - See =sample.py= file for usage
+   - Execute by typing
+     #+BEGIN_SRC sh nil
+       python3 sample.py
+     #+END_SRC
+
+** Example:
+
+   #+CAPTION: GMail - Mail received
+   #+NAME: GMail
+   #+ATTR_HTML: alt="GMail - Mail received"
+   #+ATTR_HTML: width="300" height="100"
+   [[./images/gmail.png]]
+
+** Contributing
+   - I may accept pull requests for:
+     + Bugs/Fixes
+     + CV - Face detection. Sadly OpenCV and Python3 doesn't play very
+       well on Raspberry-PI. I have to make this modules work with
+       Python2.
+
+** Note
+   - There may be bugs or design errors in the code. I wrote this in a
+     hurry, to help someone for his project. Future version may be
+     more robust and usable.
