@@ -52,3 +52,8 @@ class Messaging:
             to = to,
             from_ = frm
         )
+
+    @staticmethod
+    def speak(message='Motion detected in this room.'):
+        '''TTS: Requires espeak'''
+        p = subprocess.Popen(["espeak", "-ven+f3", "-k5", "-s150", message])
